@@ -67,6 +67,12 @@
 }
 
 @layer base {
+  :root {
+    --sidebar-width: 15rem;
+  }
+}
+
+@layer base {
   * {
     @apply border-border;
   }

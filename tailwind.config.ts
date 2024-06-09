@@ -77,6 +77,10 @@ const config = {
           to: { height: "0" },
         },
       },
+      spacing: {
+        sidebar: "var(--sidebar-width)",
+        main: "calc(100% - var(--sidebar-width))",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

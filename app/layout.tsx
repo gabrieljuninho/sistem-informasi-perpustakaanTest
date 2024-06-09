@@ -5,6 +5,8 @@ import "@/styles/globals.css";
 import { cn } from "@/lib/utils";
 import { geistSans } from "@/lib/fonts";
 
+import Layouts from "@/common/components/layouts";
+
 import { ILayoutProps } from "@/common/types";
 
 export const metadata: Metadata = {
@@ -15,7 +17,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<ILayoutProps>) {
   return (
     <html lang="en">
-      <body className={cn("font-geist", geistSans.variable)}>{children}</body>
+      <body className={cn("font-geist", geistSans.variable)}>
+        <Layouts>{children}</Layouts>
+      </body>
     </html>
   );
 }
