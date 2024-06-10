@@ -31,7 +31,7 @@ const Sidebar = () => {
     <aside className="fixed inset-y-0 left-0 w-sidebar border-r py-2">
       <div className="flex h-full flex-col justify-between">
         <div className="flex flex-col">
-          <div className="px-2 py-1">
+          <div className="px-4 py-2.5">
             <Link href="/" className="flex items-center gap-1 font-semibold">
               <LibraryBig className="h-6 w-6" />
               <span>SIMAPUS</span>
