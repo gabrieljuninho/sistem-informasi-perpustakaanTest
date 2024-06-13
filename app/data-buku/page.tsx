@@ -2,22 +2,43 @@
 
 "use client";
 
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import * as React from "react";
+
+import { ArrowUpDown, ChevronDown, Filter, MoreHorizontal } from "lucide-react";
 
 import { IBookProps } from "@/common/types/book";
 
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
-import * as React from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -30,33 +51,16 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
+import OtherForm from "@/common/components/data-buku/other-form";
+import AddBookForm from "@/common/components/data-buku/add-book-form";
 
 const data: IBookProps[] = [
   {
     id: 1,
     bookId: "978-979-794-532-9",
     bookTitle: "True Stalker",
+    category: "Percintaan",
     author: "Sirhayani",
     publisher: "Mediakita",
     publicationYear: 2017,
@@ -66,6 +70,7 @@ const data: IBookProps[] = [
     id: 2,
     bookId: "9876021779317",
     bookTitle: "Rindu Keabadian",
+    category: "Edukasi",
     author: "Ahmad Zacky Siradj",
     publisher: "DQ Publishing",
     publicationYear: 2022,
@@ -75,6 +80,7 @@ const data: IBookProps[] = [
     id: 3,
     bookId: "978-623-289-095-4",
     bookTitle: "Tulisan Sastra",
+    category: "Pelajaran",
     author: "Tenderlova",
     publisher: "CV. RinMedia",
     publicationYear: 2020,
@@ -84,6 +90,7 @@ const data: IBookProps[] = [
     id: 4,
     bookId: "978-979-22-8004-3",
     bookTitle: "Negeri 5 Menara",
+    category: "Dongeng",
     author: "A. Fuadi",
     publisher: "PT Gramedia Pustaka Utama",
     publicationYear: 2009,
@@ -93,7 +100,8 @@ const data: IBookProps[] = [
     id: 5,
     bookId: "979-22-0191-2",
     bookTitle:
-      "Mars 'n Venus in Love Kumpulan Kisah Nyata tentang Hubungan yang Serasi yang Membangkitkan Inspirasi",
+      "Kumpulan Kisah Nyata tentang Hubungan yang Serasi yang Membangkitkan Inspirasi",
+    category: "Sosial dan Budaya",
     author: "John Gray, Ph. D.",
     publisher: "PT Gramedia Pustaka Utama",
     publicationYear: 2006,
@@ -105,9 +113,7 @@ export const columns: ColumnDef<IBookProps>[] = [
   {
     accessorKey: "bookId",
     header: "Kode Buku",
-    cell: ({ row }) => (
-      <div className="capitalize">{row.getValue("bookId")}</div>
-    ),
+    cell: ({ row }) => <div>{row.getValue("bookId")}</div>,
   },
   {
     accessorKey: "bookTitle",
@@ -126,6 +132,11 @@ export const columns: ColumnDef<IBookProps>[] = [
     cell: ({ row }) => (
       <div className="capitalize">{row.getValue("bookTitle")}</div>
     ),
+  },
+  {
+    accessorKey: "category",
+    header: "Kategori",
+    cell: ({ row }) => <div>{row.getValue("category")}</div>,
   },
   {
     accessorKey: "author",
@@ -187,6 +198,8 @@ export const columns: ColumnDef<IBookProps>[] = [
 ];
 
 export default function DataTableDemo() {
+  const [searchBy, setSearchBy] = React.useState("bookTitle");
+  const [searchText, setSearchText] = React.useState("");
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -214,164 +227,139 @@ export default function DataTableDemo() {
     },
   });
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(event.target.value);
+    table.getColumn(searchBy)?.setFilterValue(event.target.value);
+  };
+
+  const handleSelectChange = (value: string) => {
+    setSearchBy(value);
+    setSearchText("");
+    table.getColumn(value)?.setFilterValue("");
+  };
+
   return (
-    <div className="w-full">
-      <div className="flex items-center justify-between py-4">
-        <div className="flex items-center gap-4">
-          <Input
-            placeholder="Cari buku..."
-            value={
-              (table.getColumn("bookTitle")?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) =>
-              table.getColumn("bookTitle")?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm"
-          />
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="ml-auto">
-                Columns <ChevronDown className="ml-2 h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              {table
-                .getAllColumns()
-                .filter((column) => column.getCanHide())
-                .map((column) => {
-                  return (
-                    <DropdownMenuCheckboxItem
-                      key={column.id}
-                      className="capitalize"
-                      checked={column.getIsVisible()}
-                      onCheckedChange={(value) =>
-                        column.toggleVisibility(!!value)
-                      }
-                    >
-                      {column.id}
-                    </DropdownMenuCheckboxItem>
-                  );
-                })}
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline">Tambah Buku</Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Edit profile</DialogTitle>
-              <DialogDescription>
-                Make changes to your profile here. Click save when you&apos;re
-                done.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="grid gap-4 py-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="name" className="text-right">
-                  Name
-                </Label>
-                <Input
-                  id="name"
-                  defaultValue="Pedro Duarte"
-                  className="col-span-3"
-                />
-              </div>
-              <div className="grid grid-cols-4 items-center gap-4">
-                <Label htmlFor="username" className="text-right">
-                  Username
-                </Label>
-                <Input
-                  id="username"
-                  defaultValue="@peduarte"
-                  className="col-span-3"
-                />
-              </div>
+    <Tabs defaultValue="data">
+      <TabsList className="flex w-max items-center justify-start">
+        <TabsTrigger value="data">Data Buku</TabsTrigger>
+        <TabsTrigger value="add">Tambah Buku</TabsTrigger>
+        <TabsTrigger value="other">Lainnya</TabsTrigger>
+      </TabsList>
+      <TabsContent value="data">
+        <div className="w-full">
+          <div className="flex items-center py-4">
+            <div className="flex items-center justify-start gap-4">
+              <Input
+                placeholder="Cari buku..."
+                value={searchText}
+                onChange={handleSearchChange}
+                className="min-w-80"
+              />
+              <Select
+                defaultValue="bookTitle"
+                onValueChange={handleSelectChange}
+              >
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="bookId">Kode Buku</SelectItem>
+                    <SelectItem value="bookTitle">Judul Buku</SelectItem>
+                    <SelectItem value="category">Kategori</SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             </div>
-            <DialogFooter>
-              <Button type="submit">Save changes</Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-      <div className="rounded-md border">
-        <ScrollArea>
-          <Table>
-            <TableHeader className="whitespace-nowrap">
-              {table.getHeaderGroups().map((headerGroup) => (
-                <TableRow key={headerGroup.id}>
-                  {headerGroup.headers.map((header) => {
-                    return (
-                      <TableHead key={header.id}>
-                        {header.isPlaceholder
-                          ? null
-                          : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
+          </div>
+          <div className="rounded-md border">
+            <ScrollArea>
+              <Table>
+                <TableHeader className="whitespace-nowrap">
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <TableRow key={headerGroup.id}>
+                      {headerGroup.headers.map((header) => {
+                        return (
+                          <TableHead key={header.id}>
+                            {header.isPlaceholder
+                              ? null
+                              : flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext()
+                                )}
+                          </TableHead>
+                        );
+                      })}
+                    </TableRow>
+                  ))}
+                </TableHeader>
+                <TableBody>
+                  {table.getRowModel().rows?.length ? (
+                    table.getRowModel().rows.map((row) => (
+                      <TableRow
+                        key={row.id}
+                        data-state={row.getIsSelected() && "selected"}
+                      >
+                        {row.getVisibleCells().map((cell) => (
+                          <TableCell
+                            key={cell.id}
+                            className="whitespace-nowrap"
+                          >
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
                             )}
-                      </TableHead>
-                    );
-                  })}
-                </TableRow>
-              ))}
-            </TableHeader>
-            <TableBody>
-              {table.getRowModel().rows?.length ? (
-                table.getRowModel().rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    data-state={row.getIsSelected() && "selected"}
-                  >
-                    {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id} className="whitespace-nowrap">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext()
-                        )}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className="h-24 text-center"
+                      >
+                        No results.
                       </TableCell>
-                    ))}
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell
-                    colSpan={columns.length}
-                    className="h-24 text-center"
-                  >
-                    No results.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
+                    </TableRow>
+                  )}
+                </TableBody>
+              </Table>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+          </div>
+          <div className="flex items-center justify-end space-x-2 py-4">
+            <div className="flex-1 text-sm text-muted-foreground">
+              {table.getFilteredSelectedRowModel().rows.length} of{" "}
+              {table.getFilteredRowModel().rows.length} row(s) selected.
+            </div>
+            <div className="space-x-2">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+              >
+                Next
+              </Button>
+            </div>
+          </div>
         </div>
-        <div className="space-x-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}
-          >
-            Previous
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}
-          >
-            Next
-          </Button>
-        </div>
-      </div>
-    </div>
+      </TabsContent>
+      <TabsContent value="add" className="py-4">
+        <AddBookForm />
+      </TabsContent>
+      <TabsContent value="other" className="py-4">
+        <OtherForm />
+      </TabsContent>
+    </Tabs>
   );
 }
