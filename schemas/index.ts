@@ -41,8 +41,23 @@ export const AddBookSchema = z.object({
   }),
 });
 
-export const CategoryBook = z.object({
+export const CategoryBookSchema = z.object({
   category: z.string().min(1, {
     message: "Kategori buku tidak boleh kosong",
+  }),
+});
+
+export const AddMemberSchema = z.object({
+  studentId: z.string().min(1, {
+    message: "Nomor Induk Siswa tidak boleh kosong",
+  }),
+  name: z.string().min(1, {
+    message: "Nama tidak boleh kosong",
+  }),
+  class: z.string().min(1, {
+    message: "Kelas tidak boleh kosong",
+  }),
+  phoneNumber: z.string().min(1, {
+    message: "No. telepon tidak boleh kosong",
   }),
 });

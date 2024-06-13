@@ -18,7 +18,7 @@ export const MAIN_MENU_ITEMS: MenuItemProps[] = [
     icon: <LayoutDashboard className="mr-2 h-[18px] w-[18px]" />,
   },
   {
-    href: "/",
+    href: "/data-anggota",
     title: "Data Anggota",
     label: "",
     icon: <UserRound className="mr-2 h-[18px] w-[18px]" />,

@@ -22,17 +22,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { CategoryBook } from "@/schemas";
+import { CategoryBookSchema } from "@/schemas";
 
 const OtherForm = () => {
-  const form = useForm<z.infer<typeof CategoryBook>>({
-    resolver: zodResolver(CategoryBook),
+  const form = useForm<z.infer<typeof CategoryBookSchema>>({
+    resolver: zodResolver(CategoryBookSchema),
     defaultValues: {
       category: "",
     },
   });
 
-  const onSubmit = (values: z.infer<typeof CategoryBook>) => {
+  const onSubmit = (values: z.infer<typeof CategoryBookSchema>) => {
     console.log(values);
   };
 

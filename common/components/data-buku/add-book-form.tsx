@@ -80,9 +80,9 @@ const AddBookForm = () => {
                         <FormLabel>Kode Buku</FormLabel>
                         <FormControl>
                           <Input
-                            autoComplete="off"
                             {...field}
                             placeholder="123456789"
+                            autoComplete="off"
                           />
                         </FormControl>
                         <FormMessage />
@@ -135,9 +135,9 @@ const AddBookForm = () => {
                     <FormLabel>Judul Buku</FormLabel>
                     <FormControl>
                       <Input
-                        autoComplete="off"
                         {...field}
                         placeholder="Habis Gelap Terbitlah Terang"
+                        autoComplete="off"
                       />
                     </FormControl>
                     <FormMessage />
@@ -156,13 +156,13 @@ const AddBookForm = () => {
                           <div className="flex w-full items-center gap-4">
                             <FormControl>
                               <Input
-                                autoComplete="off"
                                 {...field}
                                 placeholder={
                                   index === 0
                                     ? "R.A Kartini"
                                     : `Penulis ${index + 1}`
                                 }
+                                autoComplete="off"
                               />
                             </FormControl>
                             {index === 0 ? (
@@ -200,9 +200,9 @@ const AddBookForm = () => {
                     <FormLabel>Penerbit</FormLabel>
                     <FormControl>
                       <Input
-                        autoComplete="off"
                         {...field}
                         placeholder="Penerbit Erlangga"
+                        autoComplete="off"
                       />
                     </FormControl>
                     <FormMessage />
@@ -219,7 +219,6 @@ const AddBookForm = () => {
                         <FormLabel>Tahun Terbit</FormLabel>
                         <FormControl>
                           <Input
-                            autoComplete="off"
                             {...field}
                             placeholder="2002"
                             onChange={(e) =>
@@ -229,6 +228,7 @@ const AddBookForm = () => {
                                   : parseInt(e.target.value)
                               )
                             }
+                            autoComplete="off"
                           />
                         </FormControl>
                         <FormMessage />
@@ -245,7 +245,6 @@ const AddBookForm = () => {
                         <FormLabel>Jumlah Buku</FormLabel>
                         <FormControl>
                           <Input
-                            autoComplete="off"
                             {...field}
                             placeholder="1"
                             onChange={(e) =>
@@ -255,6 +254,7 @@ const AddBookForm = () => {
                                   : parseInt(e.target.value)
                               )
                             }
+                            autoComplete="off"
                           />
                         </FormControl>
                         <FormMessage />
