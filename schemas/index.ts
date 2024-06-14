@@ -61,3 +61,16 @@ export const AddMemberSchema = z.object({
     message: "No. telepon tidak boleh kosong",
   }),
 });
+
+export const AddVisitorSchema = z.object({
+  name: z.string().min(1, {
+    message: "Nama tidak boleh kosong",
+  }),
+  date: z.date({
+    required_error: "Tanggal kunjungan tidak boleh kosong",
+    invalid_type_error: "Tanggal kunjungan tidak valid",
+  }),
+  reason: z.string().min(1, {
+    message: "Alasan tidak boleh kosong",
+  }),
+});

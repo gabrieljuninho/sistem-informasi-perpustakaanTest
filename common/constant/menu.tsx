@@ -30,7 +30,7 @@ export const MAIN_MENU_ITEMS: MenuItemProps[] = [
     icon: <BookText className="mr-2 h-[18px] w-[18px]" />,
   },
   {
-    href: "/",
+    href: "/data-pengunjung",
     title: "Data Pengunjung",
     label: "",
     icon: <Users className="mr-2 h-[18px] w-[18px]" />,
