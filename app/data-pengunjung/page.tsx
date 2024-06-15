@@ -153,7 +153,7 @@ export const columns: ColumnDef<IVisitorProps>[] = [
 ];
 
 export default function DataTableDemo() {
-  const [searchBy, setSearchBy] = React.useState("name");
+  const [searchBy, setSearchBy] = React.useState("visitorName");
   const [searchText, setSearchText] = React.useState("");
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -210,13 +210,16 @@ export default function DataTableDemo() {
                 onChange={handleSearchChange}
                 className="min-w-80"
               />
-              <Select defaultValue="name" onValueChange={handleSelectChange}>
+              <Select
+                defaultValue="visitorName"
+                onValueChange={handleSelectChange}
+              >
                 <SelectTrigger className="w-[270px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    <SelectItem value="name">Nama</SelectItem>
+                    <SelectItem value="visitorName">Nama</SelectItem>
                   </SelectGroup>
                 </SelectContent>
               </Select>

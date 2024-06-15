@@ -74,3 +74,24 @@ export const AddVisitorSchema = z.object({
     message: "Alasan tidak boleh kosong",
   }),
 });
+
+export const RegisterSchema = z.object({
+  name: z.string().min(1, {
+    message: "Nama tidak boleh kosong",
+  }),
+  email: z.string().email({ message: "Alamat email tidak valid" }).min(1, {
+    message: "Alamat email tidak boleh kosong",
+  }),
+  password: z.string().min(8, {
+    message: "Kata sandi minimal harus 8 karakter",
+  }),
+});
+
+export const LoginSchema = z.object({
+  email: z.string().email({ message: "Alamat email tidak valid" }).min(1, {
+    message: "Alamat email tidak boleh kosong",
+  }),
+  password: z.string().min(8, {
+    message: "Kata sandi minimal harus 8 karakter",
+  }),
+});

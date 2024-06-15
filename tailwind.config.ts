@@ -77,6 +77,9 @@ const config = {
           to: { height: "0" },
         },
       },
+      minWidth: {
+        screen: "100vw",
+      },
       spacing: {
         sidebar: "var(--sidebar-width)",
         main: "calc(100% - var(--sidebar-width))",
